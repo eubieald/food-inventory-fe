@@ -38,4 +38,5 @@ export const addFruits = async (data: FruitsDataType) => {
       body: JSON.stringify(data),
     },
   });
+  return response;
 };
