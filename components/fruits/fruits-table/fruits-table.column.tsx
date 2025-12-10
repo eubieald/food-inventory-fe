@@ -26,6 +26,14 @@ export const columns: ColumnDef<FruitsDataType>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    cell: ({ row }) => row.original.price,
+    cell: ({ row }) => {
+      const price = parseFloat(row.original.price); // or Number(row.original.price)
+      const formatted = new Intl.NumberFormat("en-PH", {
+        style: "currency",
+        currency: "PHP",
+      }).format(price);
+
+      return <span>{formatted}</span>;
+    },
   },
 ];
