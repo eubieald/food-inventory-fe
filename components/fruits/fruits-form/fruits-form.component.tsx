@@ -1,89 +1,76 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
-import { GenericProps } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { fruitsFormSchema } from "./fruits-from.schema";
-import { useForm } from "react-hook-form";
-import { FormInput } from "./fruits-form.types";
+import { Button } from "@/components/ui/button";
 import { GenericInput } from "@/components/form/generic-input";
-import { useFruitsForm } from "./use-fruits-form";
+import { UseFormReturn } from "react-hook-form";
+import { FormInputType } from "../fruits.types";
 
-export const FruitsForm = ({ className }: GenericProps) => {
-  const form = useForm<FormInput>({
-    mode: "onBlur",
-    resolver: zodResolver(fruitsFormSchema),
-    defaultValues: {
-      name: "",
-      type: "",
-      stock: "",
-      price: "",
-    },
-  });
+interface FruitsFormProps {
+  form: UseFormReturn<FormInputType>;
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (data: FormInputType) => Promise<void>;
+  onOpenAdd: () => void;
+}
 
-  const { onSubmit, open, setOpen } = useFruitsForm();
-
+export const FruitsForm = ({
+  form,
+  open,
+  onClose,
+  onSubmit,
+  onOpenAdd,
+}: FruitsFormProps) => {
   return (
-    <div className={cn("", className)}>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Add New Fruit</Button>
-        </DialogTrigger>
+    <Dialog open={open} onOpenChange={onClose}>
+      {/* REMOVE DialogTrigger */}
+      <Button variant="outline" onClick={onOpenAdd}>
+        Add Fruit
+      </Button>
 
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Fruits Creation</DialogTitle>
-            <DialogDescription>Add a new fruit to the list.</DialogDescription>
-          </DialogHeader>
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <GenericInput
-                formHook={form}
-                inputProps={{ name: "name" }}
-                label="Name"
-              />
-
-              <GenericInput
-                formHook={form}
-                inputProps={{ name: "type" }}
-                label="type"
-              />
-              <GenericInput
-                formHook={form}
-                inputProps={{ name: "stock" }}
-                label="Stock"
-              />
-              <GenericInput
-                formHook={form}
-                inputProps={{ name: "price" }}
-                label="Price"
-              />
-
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline" type="button">
-                    Cancel
-                  </Button>
-                </DialogClose>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-    </div>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Fruits Form</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <GenericInput
+              formHook={form}
+              inputProps={{ name: "name" }}
+              label="Name"
+            />
+            <GenericInput
+              formHook={form}
+              inputProps={{ name: "type" }}
+              label="Type"
+            />
+            <GenericInput
+              formHook={form}
+              inputProps={{ name: "stock" }}
+              label="Stock"
+            />
+            <GenericInput
+              formHook={form}
+              inputProps={{ name: "price" }}
+              label="Price"
+            />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button type="submit">Save</Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
