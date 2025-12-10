@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useFruitsStore } from "./fruits.store";
 import { FruitsTable, columns } from "./fruits-table";
 import { FruitsDataType } from "./fruits.types";
+import { Spinner } from "../spinner";
 
 const FruitsWrapperClient = ({
   initialFruits,
@@ -21,7 +22,7 @@ const FruitsWrapperClient = ({
   }, [hasHydrated, initialFruits, setFruits]);
 
   if (!hasHydrated) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   return <FruitsTable columns={columns} />;

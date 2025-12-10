@@ -31,7 +31,7 @@ export const getFruitsList = async ({ searchParams }: FruitsListProps) => {
 
 export const addFruits = async (data: FruitsDataType) => {
   const path = `fruits`;
-  const response = await genericRequest({
+  await genericRequest({
     path: path,
     method: "POST",
     options: {
